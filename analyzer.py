@@ -10,28 +10,28 @@ import requests
 
 def calculate_entropy(password):
     """
-    [span_2](start_span)[span_3](start_span)Calculates Shannon Entropy to measure password unpredictability[span_2](end_span)[span_3](end_span).
+    Calculates Shannon Entropy to measure password unpredictability.
     Formula: H = L * log2(N)
     """
     pool_size = 0
-    # [span_4](start_span)Check for lowercase letters[span_4](end_span)
+    # Check for lowercase letters
     if re.search(r'[a-z]', password): pool_size += 26
-    # [span_5](start_span)[span_6](start_span)Check for uppercase letters[span_5](end_span)[span_6](end_span)
+    # Check for uppercase letters
     if re.search(r'[A-Z]', password): pool_size += 26
-    # [span_7](start_span)[span_8](start_span)Check for numbers[span_7](end_span)[span_8](end_span)
+    # Check for numbers
     if re.search(r'[0-9]', password): pool_size += 10
-    # [span_9](start_span)[span_10](start_span)Check for special characters[span_9](end_span)[span_10](end_span)
+    # Check for special characters
     if re.search(r'[^a-zA-Z0-9]', password): pool_size += 32
 
     if pool_size == 0:
         return 0
 
-    [span_11](start_span)[span_12](start_span)entropy = len(password) * math.log2(pool_size)[span_11](end_span)[span_12](end_span)
+    entropy = len(password) * math.log2(pool_size)
     return round(entropy, 2)
 
 def check_pwned_api(password):
     """
-    [span_13](start_span)Checks if the password has appeared in known data breaches[span_13](end_span).
+    Checks if the password has appeared in known data breaches.
     Uses the HaveIBeenPwned API via K-Anonymity for privacy.
     """
     # Create SHA-1 hash of the password
@@ -55,19 +55,19 @@ def check_pwned_api(password):
 
 def check_password_strength(password):
     """
-    [span_14](start_span)[span_15](start_span)Analyzes password based on length, complexity, and entropy[span_14](end_span)[span_15](end_span).
+    Analyzes password based on length, complexity, and entropy.
     """
     score = 0
     feedback = []
 
-    # [span_16](start_span)[span_17](start_span)Check Length[span_16](end_span)[span_17](end_span)
+    # Check Length
     if len(password) < 8:
         feedback.append("[-] Password is too short (min 8 chars).")
     else:
         score += 1
         feedback.append("[+] Good length.")
 
-    # [span_18](start_span)[span_19](start_span)Check Complexity using Regular Expressions[span_18](end_span)[span_19](end_span)
+    # Check Complexity using Regular Expressions
     if re.search(r"[A-Z]", password): score += 1
     else: feedback.append("[-] Add uppercase letters (A-Z).")
 
@@ -77,7 +77,7 @@ def check_password_strength(password):
     if re.search(r"[!@#$%^&*]", password): score += 1
     else: feedback.append("[-] Add special characters (!@#$%).")
 
-    # [span_20](start_span)Get Entropy score and Breach status[span_20](end_span)
+    # Get Entropy score and Breach status
     entropy = calculate_entropy(password)
     leak_status = check_pwned_api(password)
 
